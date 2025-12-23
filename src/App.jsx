@@ -2,13 +2,24 @@ import React, { useState } from 'react'
 
 const App = () => {
 
+ const [title, setTitle] = useState('')
+ const [detail, setDetail] = useState('')
+
+ const [task, setTask] = useState([])
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log('Form submitted')
+
+    const copyTask = [...task]
+    copyTask.push({title, detail})
+    setTask(copyTask)
+    
+    console.log(title)
+    setTitle('')
+    setDetail('')
   }
 
-    const [title, setTitle] = useState('')
+   
 
     return (
     
@@ -24,12 +35,19 @@ const App = () => {
      <input className='bg-cyan-800 px-5 py-2 rounded-4xl w-full outline-none'
      type="text" 
      placeholder="Title" 
-     name="username" />
+     name="username"
+     value={title}
+     onChange={(e) => setTitle(e.target.value)}
+      />
 
      <textarea className='bw-full p-3 rounded-lg w-full h-40 bg-black text-white border border-cyan-500 outline-none focus:shadow-[0_0_25px_rgba(34,211,238,0.6)]
     transition-all duration-300'
      placeholder="Write a note" 
-     name="message"></textarea>
+     name="message"
+     value={detail}
+     onChange={(e)=>{
+      setDetail(e.target.value)
+     }}></textarea>
 
      <button className='bg-cyan-400 w-full text-black px-5 py-2 rounded-4xl hover:bg-cyan-600'>Add Note</button>
 
