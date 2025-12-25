@@ -1,22 +1,30 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
+import {Trash } from 'lucide-react'
+
 
 const App = () => {
 
  const [title, setTitle] = useState('')
  const [detail, setDetail] = useState('')
 
- const [task, setTask] = useState([])
+ const [task, setTask] = useState([]) //array of tasks, empty initially
 
   const submitHandler = (e) => {
-    e.preventDefault();
+    e.preventDefault(); //to prevent reloading of page on form submission
 
-    const copyTask = [...task]
+    const copyTask = [...task] //create a copy of task array
     copyTask.push({title, detail})
     setTask(copyTask)
-    
-    console.log(title)
+  
     setTitle('')
     setDetail('')
+  }
+
+  function deleteTask(index) {
+    const copyTask = [...task];  //here copy task is a new array
+    copyTask.splice(index, 1); //remove one element at the given index
+    setTask(copyTask);
+
   }
 
    
@@ -55,9 +63,20 @@ const App = () => {
 
      <div className='flex flex-col lg:w-1/2 p-10 lg:border-l-2'>
      <h1 className='font-bold text-3xl'>Recent Notes</h1>
-     <div className='flex gap-5 flex-wrap mt-5 overflow-auto h-full'>
-     <div className='h-52 rounded-2xl w-40 bg-white'></div>
-     <div className='h-52 rounded-2xl w-40 bg-white'></div>
+     <div className='flex gap-5 flex-wrap mt-5 overflow-auto h-full justify-start items-start'>
+     
+    {task.map((elem, index) => (
+      <div key={index} className='bg-[url("https://static.vecteezy.com/system/resources/previews/037/152/677/non_2x/sticky-note-paper-background-free-png.png")] flex flex-col justify-between bg-cover text-cyan-800 pt-9 pb-3 px-5 rounded-xl w-40 h-52'>
+        <div>
+        <h2 className='font-bold text-xl mb-2'>{elem.title}</h2>
+        <p className='text-sm text-black line-clamp-5 wrap-break-word overflow-y-auto'>{elem.detail}</p>
+        </div>
+        <button onClick={() => {
+          deleteTask(index)} }
+          className='flex justify-end cursor-pointer hover:text-red-600 hover:scale-110 hover:duration-500 hover:ease-in'><Trash /></button>
+      </div>
+    ))}
+
      </div>
      </div>
 
